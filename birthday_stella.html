@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Stella!</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Arial', sans-serif;
+            background: radial-gradient(circle, #000000, #0d0d30, #151557, #0b0b22);
+        }
+
+        /* Starry background */
+        @keyframes blink {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: blink 3s infinite ease-in-out;
+        }
+
+        /* Shooting star effect */
+        @keyframes shootingStar {
+            0% { opacity: 0; transform: translate(0, 0); }
+            10% { opacity: 1; }
+            100% { opacity: 0; transform: translate(-1000px, -1000px); }
+        }
+
+        .shooting-star {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0;
+            animation: shootingStar 5s linear infinite;
+        }
+
+        canvas {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        /* Happy Birthday Text */
+        #text {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translate(-50%, 0);
+            font-size: 60px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+            animation: glow 2s ease-in-out infinite;
+            white-space: nowrap;
+            z-index: 10; /* Ensure text is on top */
+        }
+
+        /* Glowing text effect */
+        @keyframes glow {
+            0% { text-shadow: 0 0 20px #ff69b4, 0 0 30px #ff69b4; }
+            50% { text-shadow: 0 0 30px #00ffff, 0 0 40px #00ffff; }
+            100% { text-shadow: 0 0 20px #ff69b4, 0 0 30px #ff69b4; }
+        }
+
+        /* Logo animation */
+        #logo {
+            position: absolute;
+            top: 40%; /* Moved the logo higher */
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1.2);
+            opacity: 1;
+            animation: pulse 4s infinite;
+            z-index: 10; /* Ensure logo is on top */
+        }
+
+        /* Pulse effect for the logo */
+        @keyframes pulse {
+            0% { transform: translate(-50%, -50%) scale(1.2); }
+            50% { transform: translate(-50%, -50%) scale(1.4); }
+            100% { transform: translate(-50%, -50%) scale(1.2); }
+        }
+
+        /* Publication Firework Titles */
+        .publication {
+            position: absolute;
+            font-size: 18px;
+            color: #ffffff;
+            opacity: 0;
+            animation: fadeInOut 5s ease forwards;
+            z-index: 20; /* Ensure publications are on top */
+        }
+
+        /* Fade and expand animation for publication titles */
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translate(0, 0) scale(1); }
+            50% { opacity: 1; transform: translate(-50%, -50%) scale(1.5); }
+            100% { opacity: 0; transform: translate(-50%, -50%) scale(2); }
+        }
+
+        /* Final message style */
+        #finalMessage {
+            display: none;
+            position: absolute;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 22px;
+            color: #FFD700; /* Dim yellow */
+            text-align: center;
+            z-index: 30;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Fireworks Canvas -->
+<canvas id="fireworkCanvas"></canvas>
+
+<!-- Happy Birthday Text -->
+<div id="text">Happy Birthday, Stella!</div>
+
+<!-- Transparent Lourenco Lab Logo -->
+<img id="logo" src="logo-transparent.png" alt="Lourenco Lab Logo">
+
+<!-- Final Message -->
+<div id="finalMessage">
+    Dear Stella, Wishing you a wonderful birthday and celebration! 🎉 <br>
+    I hope you enjoy this small presentation for now - I know the 'real gift' should probably be finished manuscripts...I'll be working on them!<br>
+    - Yaxin
+</div>
+
+<!-- Stars in the universe -->
+<script>
+    // Create blinking stars
+    function createStars() {
+        const numberOfStars = 100;
+        for (let i = 0; i < numberOfStars; i++) {
+            const star = document.createElement('div');
+            star.classList.add('star');
+            star.style.top = `${Math.random() * window.innerHeight}px`;
+            star.style.left = `${Math.random() * window.innerWidth}px`;
+            star.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            document.body.appendChild(star);
+        }
+    }
+
+    // Create shooting stars
+    function createShootingStars() {
+        const shootingStar = document.createElement('div');
+        shootingStar.classList.add('shooting-star');
+        shootingStar.style.top = `${Math.random() * window.innerHeight}px`;
+        shootingStar.style.left = `${Math.random() * window.innerWidth}px`;
+        shootingStar.style.animationDuration = `${Math.random() * 5 + 3}s`;
+        document.body.appendChild(shootingStar);
+
+        setTimeout(() => {
+            shootingStar.remove(); // Remove after animation
+        }, 5000);
+    }
+
+    createStars(); // Create initial stars
+
+    setInterval(createShootingStars, 10000); // Create shooting stars every 10 seconds
+</script>
+
+<!-- Firework Animations (Rest of the code remains the same) -->
+<script>
+    const canvas = document.getElementById('fireworkCanvas');
+    const ctx = canvas.getContext('2d');
+    let fireworks = [];
+    const colors = ['#ff6b6b', '#feca57', '#48dbfb', '#1dd1a1', '#5f27cd', '#ff9f43'];
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const publications = [
+        "Liu, Y., Ayzenberg, V., & Lourenco, S. F. (2024). Object geometry serves humans’ intuitive physics of stability.",
+        "Thieu, M. K., Ayzenberg, V., Lourenco, S. F., & Kragel, P. A. (2024). Visual looming is a primitive for human emotion.",
+        "Bonny, J. W. & Lourenco, S. F. (2023). Electrophysiological comparison of cumulative area and non-symbolic number.",
+        "Aulet, L. S., & Lourenco, S. F. (2023). Visual adaptation reveals multichannel coding for numerosity.",
+        "Lourenco, S. F., & Liu, Y. (2023). The impacts of anxiety and motivation on spatial performance...",
+        "Liu, Y., & Lourenco, S. F. (2023). Trial history influences the malleability of gender differences...",
+        "Lourenco, S. F., & Aulet, L. S. (2023). A theory of perceptual number encoding. Psychological Review, 130, 155.",
+        "Aulet, L. S., & Lourenco, S. F. (2023). No intrinsic number bias: evaluating the role of perceptual...",
+        "Liu, Y., & Lourenco, S. F. (2022). Affective Factors Affect Visuospatial Decision-making...",
+        "Aulet, L. S., & Lourenco, S. F. (2022). Perceived number is not abstract. Behavioral and Brain Sciences [commentary]...",
+        "Ayzenberg, V., & Lourenco, S. (2022). Perception of an object’s global shape is best described...",
+        "Ayzenberg, V., Kamps, F. S., Dilks, D. D., & Lourenco, S. F. (2022). Skeletal representations of shape in the human visual...",
+        "Liu, Y., & Lourenco, S. F. (2021). Visual perception of apparent motion abides by minimization principles...",
+        "Aulet, L. S., Yousif, S. R., & Lourenco, S. F. (2021). Spatial-numerical associations from a novel paradigm ...",
+        "Casey, K., & Novick, K., Lourenco, S. F. (2021). Sixty years of gender representation in children’s books...",
+        "Aulet, L. S., & Lourenco, S. F. (2021). The relative salience of numerical and non-numerical dimensions...",
+        "Aulet, L. S., & Lourenco, S. F. (2021). Numerosity and cumulative surface area are perceived holistically...",
+        "Gruber, J., Mendle, J., Akinola, M., Atlas, L., Ayduk, O., Barch, D., … & Wheatley, T. (2021). The future of women in psychological science...",
+        "Ayzenberg, V., & Lourenco, S. F. (2020). The relations among navigation, object analysis, and magnitude perception in children...",
+        "Lourenco, S. F., & Tasimi, A. (2020). No participant left behind: Conducting science during COVID-19. Trends in Cognitive Sciences."
+    ];
+
+    let currentIndex = 0; // Track the current publication being shown
+
+    // Firework class
+    class Firework {
+        constructor(x, y, color) {
+            this.x = x;
+            this.y = y;
+            this.radius = Math.random() * 3 + 2;
+            this.color = color;
+            this.velocity = {
+                x: (Math.random() - 0.5) * 10,
+                y: (Math.random() - 0.5) * 10
+            };
+            this.alpha = 1;
+            this.gravity = 0.03;
+        }
+
+        update() {
+            this.velocity.y += this.gravity;
+            this.x += this.velocity.x;
+            this.y += this.velocity.y;
+            this.alpha -= 0.02;
+        }
+
+        draw() {
+            ctx.save();
+            ctx.globalAlpha = this.alpha;
+            ctx.beginPath();
+            if (this.radius > 0) {
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+            }
+            ctx.fillStyle = this.color;
+            ctx.fill();
+            ctx.restore();
+        }
+    }
+
+    // Function to create fireworks
+    function createFirework(x, y, color = colors[Math.floor(Math.random() * colors.length)]) {
+        const particles = [];
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Firework(x, y, color));
+        }
+        fireworks.push(...particles);
+        displayPublication(x, y);
+    }
+
+    // Function to display the next publication at the firework location
+    function displayPublication(x, y) {
+        const publication = document.createElement('div');
+        publication.classList.add('publication');
+        publication.style.left = `${x}px`;
+        publication.style.top = `${y}px`;
+        publication.textContent = publications[currentIndex];
+        document.body.appendChild(publication);
+        
+        // Remove the element after the animation completes
+        setTimeout(() => {
+            publication.remove();
+        }, 5000);
+
+        // Move to the next publication in reverse chronological order
+        currentIndex = (currentIndex + 1);
+
+        if (currentIndex >= publications.length) {
+            showFinalMessage(); // Show final message after all publications are shown
+        }
+    }
+
+    // Function to display the final message
+    function showFinalMessage() {
+        const finalMessage = document.getElementById('finalMessage');
+        finalMessage.style.display = 'block'; // Show the final message
+    }
+
+    // Function to animate fireworks
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        fireworks = fireworks.filter(firework => firework.alpha > 0);
+
+        fireworks.forEach(firework => {
+            firework.update();
+            firework.draw();
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    // Create fireworks every 2 seconds at random positions
+    setInterval(() => {
+        const randomX = Math.random() * canvas.width;
+        const randomY = Math.random() * canvas.height;
+        createFirework(randomX, randomY);
+    }, 2000);
+
+    // Adjust canvas size when window resizes
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+
+    animate();
+</script>
+
+</body>
+</html>
+
+
+
+
