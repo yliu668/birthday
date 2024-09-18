@@ -129,6 +129,22 @@
             z-index: 30;
         }
 
+        /* Cat figure walking */
+        #cat {
+            display: none;
+            position: absolute;
+            bottom: 10%;
+            left: -200px; /* Start from outside the screen */
+            width: 150px;
+            animation: walkCat 10s linear forwards;
+            z-index: 25; /* Behind the final message */
+        }
+
+        @keyframes walkCat {
+            0% { left: -200px; }
+            100% { left: 100%; }
+        }
+
     </style>
 </head>
 <body>
@@ -148,6 +164,9 @@
     I hope you enjoyed this small presentation for now - I know the 'real gift' should probably be finished manuscripts...I'll be working on them!<br>
     - Yaxin
 </div>
+
+<!-- Cat Figure -->
+<img id="cat" src="cat.png" alt="Walking Cat">
 
 <!-- Stars in the universe -->
 <script>
@@ -285,10 +304,12 @@
         }
     }
 
-    // Function to display the final message
+    // Function to display the final message and cat
     function showFinalMessage() {
         const finalMessage = document.getElementById('finalMessage');
+        const cat = document.getElementById('cat');
         finalMessage.style.display = 'block'; // Show the final message
+        cat.style.display = 'block'; // Start cat animation
     }
 
     // Function to animate fireworks
@@ -322,6 +343,7 @@
 
 </body>
 </html>
+
 
 
 
